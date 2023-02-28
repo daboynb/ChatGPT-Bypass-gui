@@ -13,6 +13,11 @@ Powershell gui script that allows you to bypass content filtering in ChatGPT thr
 
 ![Screenshot from 2023-02-27 11-45-19](https://user-images.githubusercontent.com/106079917/221613984-5a20637b-f46f-4b12-99b9-17cf7e0b5d99.png)
 
+# Limitations
+
+  - you can't paste more than 4000 characters
+  - It can't remember the previous asked question
+
 # Issue
 Need to fix :
   - utf8 encoding
