@@ -68,22 +68,25 @@
   <script>
 $(document).ready(function() {
 
-// Check if the chatgpt_api is available in cookies
 var chatgpt_api;
 var apiUrl = "https://api.openai.com/v1/completions";
 
+function askApiKey() {
+  chatgpt_api = prompt("Please enter your OpenAI API key:");
+  if (!chatgpt_api) {
+    alert("API key cannot be empty. Please try again.");
+    askApiKey();
+  } else {
+    document.cookie = "chatgpt_api=" + chatgpt_api + "; path=/";
+  }
+}
+
 if (document.cookie.indexOf("chatgpt_api") >= 0) {
   chatgpt_api = document.cookie.replace(/(?:(?:^|.*;\s*)chatgpt_api\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+} else {
+  askApiKey();
 }
 
-if (!chatgpt_api) {
-  do {
-    chatgpt_api = prompt("Please enter your OpenAI API key:");
-  } while (!chatgpt_api);
-  document.cookie = "chatgpt_api=" + chatgpt_api + "; path=/";
-}
-
-// Add click event listener to answer button
 $('#answer-btn').click(function() {
   var question = $('#question').val();
   var body = {
@@ -112,13 +115,13 @@ $('#answer-btn').click(function() {
   });
 });
 
-// Add click event listener to clear button
 $('#clear-btn').click(function() {
   $('#question').val("");
   $('#answer').val("");
 });
 
 });
+
   </script>
 
 </body>
