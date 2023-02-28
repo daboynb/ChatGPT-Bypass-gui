@@ -1,6 +1,9 @@
 # ChatGPT-Bypass
 Powershell gui script that allows you to bypass content filtering in ChatGPT through the OpenAI autocompletion API for DaVinci-003.
 
+# Download 
+https://github.com/daboynb/ChatGPT-Bypass-gui/releases/download/release/gui.exe
+
 # How to use 
 
 1) go to https://platform.openai.com/account/api-keys
