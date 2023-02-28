@@ -67,59 +67,58 @@
 
   <script>
 $(document).ready(function() {
-  // Check if the chatgpt_api is available in cookies
-  var chatgpt_api;
-  var apiUrl = "https://api.openai.com/v1/completions";
 
-  if (document.cookie.indexOf("chatgpt_api") >= 0) {
-    chatgpt_api = document.cookie.replace(/(?:(?:^|.*;\s*)chatgpt_api\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-  } else {
-    // If chatgpt_api is not in cookies, ask for it and set a new cookie
+// Check if the chatgpt_api is available in cookies
+var chatgpt_api;
+var apiUrl = "https://api.openai.com/v1/completions";
+
+if (document.cookie.indexOf("chatgpt_api") >= 0) {
+  chatgpt_api = document.cookie.replace(/(?:(?:^|.*;\s*)chatgpt_api\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+}
+
+if (!chatgpt_api) {
+  do {
     chatgpt_api = prompt("Please enter your OpenAI API key:");
-    document.cookie = "chatgpt_api=" + chatgpt_api + "; path=/";
-  }
+  } while (!chatgpt_api);
+  document.cookie = "chatgpt_api=" + chatgpt_api + "; path=/";
+}
 
-  // Add click event listener to answer button
-  $('#answer-btn').click(function() {
-    var question = $('#question').val();
-    if (chatgpt_api === "") {
-      alert("Please enter your OpenAI API key");
-    } else {
-      var body = {
-        prompt: question,
-        model: "text-davinci-003",
-        max_tokens: 4000,
-        temperature: 1.0
-      };
-      var headers = {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + chatgpt_api
-      };
-      var jsonBody = JSON.stringify(body);
-      $.ajax({
-        url: apiUrl,
-        type: "POST",
-        headers: headers,
-        data: jsonBody,
-        success: function(response) {
-          var answer = response.choices.map(function(choice) { return choice.text; }).join("\n");
-          $('#answer').val(answer);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          console.error("Error: " + textStatus, errorThrown);
-        }
-      });
+// Add click event listener to answer button
+$('#answer-btn').click(function() {
+  var question = $('#question').val();
+  var body = {
+    prompt: question,
+    model: "text-davinci-003",
+    max_tokens: 4000,
+    temperature: 1.0
+  };
+  var headers = {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer " + chatgpt_api
+  };
+  var jsonBody = JSON.stringify(body);
+  $.ajax({
+    url: apiUrl,
+    type: "POST",
+    headers: headers,
+    data: jsonBody,
+    success: function(response) {
+      var answer = response.choices.map(function(choice) { return choice.text; }).join("\n");
+      $('#answer').val(answer);
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+      console.error("Error: " + textStatus, errorThrown);
     }
-  });
-
-  // Add click event listener to clear button
-  $('#clear-btn').click(function() {
-    $('#question').val("");
-    $('#answer').val("");
   });
 });
 
+// Add click event listener to clear button
+$('#clear-btn').click(function() {
+  $('#question').val("");
+  $('#answer').val("");
+});
 
+});
   </script>
 
 </body>
