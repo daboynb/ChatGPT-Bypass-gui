@@ -15,7 +15,7 @@ website that allows you to bypass content filtering in ChatGPT through the OpenA
 
 # Limitations
 
-  - you can't paste more than 4000 characters
+  - you can't paste more than 388 characters
   - It can't remember the previous asked question
 
 # credits
