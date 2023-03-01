@@ -18,7 +18,7 @@ https://github.com/daboynb/ChatGPT-Bypass-gui/releases/download/release/gui.exe
 
 # Limitations
 
-  - you can't paste more than 4000 characters
+  - you can't paste more than 388 characters
   - It can't remember the previous asked question
 
 # credits
