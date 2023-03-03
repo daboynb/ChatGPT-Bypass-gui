@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Ask a Question</title>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <style>
+    <style>
     body {
       font-family: Arial, sans-serif;
     }
@@ -79,6 +79,14 @@
       } else {
         askApiKey();
       }
+
+      $('#question').on('input paste', function() {
+        var maxLength = $(this).attr('maxlength');
+        var length = $(this).val().length;
+        if (length > maxLength) {
+          $(this).val($(this).val().substr(0, maxLength));
+        }
+      });
 
       $('#answer-btn').click(function() {
         var question = $('#question').val();
