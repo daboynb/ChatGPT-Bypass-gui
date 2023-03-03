@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>Ask a Question</title>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -44,85 +43,77 @@
   </style>
 </head>
 <body>
-
   <div>
     <label for="question">What is your question?</label>
-    <textarea id="question" rows="4" cols="50"></textarea>
+    <textarea id="question" rows="4" cols="50" maxlength="2048"></textarea>
   </div>
-
   <br>
-
   <div>
     <button id="answer-btn">Answer</button>
     <button id="clear-btn">Clear</button>
   </div>
-
   <br>
-
   <div>
     <label for="answer">Answer:</label>
     <br>
     <textarea id="answer" rows="10" cols="50" readonly></textarea>
   </div>
-
   <script>
-$(document).ready(function() {
+    $(document).ready(function() {
 
-var chatgpt_api;
-var apiUrl = "https://api.openai.com/v1/completions";
+      var chatgpt_api;
+      var apiUrl = "https://api.openai.com/v1/completions";
 
-function askApiKey() {
-  chatgpt_api = prompt("Please enter your OpenAI API key:");
-  if (!chatgpt_api) {
-    alert("API key cannot be empty. Please try again.");
-    askApiKey();
-  } else {
-    document.cookie = "chatgpt_api=" + chatgpt_api + "; path=/";
-  }
-}
+      function askApiKey() {
+        chatgpt_api = prompt("Please enter your OpenAI API key:");
+        if (!chatgpt_api) {
+          alert("API key cannot be empty. Please try again.");
+          askApiKey();
+        } else {
+          document.cookie = "chatgpt_api=" + chatgpt_api + "; path=/";
+        }
+      }
 
-if (document.cookie.indexOf("chatgpt_api") >= 0) {
-  chatgpt_api = document.cookie.replace(/(?:(?:^|.*;\s*)chatgpt_api\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-} else {
-  askApiKey();
-}
+      if (document.cookie.indexOf("chatgpt_api") >= 0) {
+        chatgpt_api = document.cookie.replace(/(?:(?:^|.*;\s*)chatgpt_api\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+      } else {
+        askApiKey();
+      }
 
-$('#answer-btn').click(function() {
-  var question = $('#question').val();
-  var body = {
-    prompt: question,
-    model: "text-davinci-003",
-    max_tokens: 4000,
-    temperature: 1.0
-  };
-  var headers = {
-    "Content-Type": "application/json",
-    "Authorization": "Bearer " + chatgpt_api
-  };
-  var jsonBody = JSON.stringify(body);
-  $.ajax({
-    url: apiUrl,
-    type: "POST",
-    headers: headers,
-    data: jsonBody,
-    success: function(response) {
-      var answer = response.choices.map(function(choice) { return choice.text; }).join("\n");
-      $('#answer').val(answer);
-    },
-    error: function(jqXHR, textStatus, errorThrown) {
-      console.error("Error: " + textStatus, errorThrown);
-    }
-  });
-});
+      $('#answer-btn').click(function() {
+        var question = $('#question').val();
+        var body = {
+          prompt: question,
+          model: "text-davinci-003",
+          max_tokens: 4000,
+          temperature: 1.0
+        };
+        var headers = {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + chatgpt_api
+        };
+        var jsonBody = JSON.stringify(body);
+        $.ajax({
+          url: apiUrl,
+          type: "POST",
+          headers: headers,
+          data: jsonBody,
+          success: function(response) {
+            var answer = response.choices.map(function(choice) { return choice.text; }).join("\n");
+            $('#answer').val(answer);
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            console.error("Error: " + textStatus, errorThrown);
+          }
+        });
+      });
 
-$('#clear-btn').click(function() {
-  $('#question').val("");
-  $('#answer').val("");
-});
+      $('#clear-btn').click(function() {
+        $('#question').val('');
+        $('#answer').val('');
+      });
 
-});
-
+    });
   </script>
-
 </body>
 </html>
