@@ -43,9 +43,10 @@
   </style>
 </head>
 <body>
+<p>This model has a maximum context length of 4097 tokens. If you don't see any output, it means you have exceeded the limit. Both the question and answer are included in the 4097 tokens.</p>
   <div>
     <label for="question">What is your question?</label>
-    <textarea id="question" rows="4" cols="50" maxlength="291"></textarea>
+    <textarea id="question" rows="4" cols="50"></textarea>
   </div>
   <br>
   <div>
@@ -79,14 +80,6 @@
       } else {
         askApiKey();
       }
-
-      $('#question').on('input paste', function() {
-        var maxLength = $(this).attr('maxlength');
-        var length = $(this).val().length;
-        if (length > maxLength) {
-          $(this).val($(this).val().substr(0, maxLength));
-        }
-      });
 
       $('#answer-btn').click(function() {
         var question = $('#question').val();
