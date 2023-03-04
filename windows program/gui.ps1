@@ -1,4 +1,5 @@
 Add-Type -AssemblyName System.Windows.Forms
+Write-Host "This model has a maximum context length of 4097 tokens. If you don't see any output, it means you have exceeded the limit. Both the question and answer are included in the 4097 tokens."
 
 # Check if the CHATGPT_TOKEN environment variable exists
 $documentsPath = Join-Path -Path $env:USERPROFILE -ChildPath "Documents"
