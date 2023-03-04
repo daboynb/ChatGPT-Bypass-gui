@@ -15,7 +15,7 @@ website that allows you to bypass content filtering in ChatGPT through the OpenA
 
 # Limitations
 
-  - you can't paste more than 388 characters
+  - This model has a maximum context length of 4097 tokens. If you don't see any output, it means you have exceeded the limit. Both the question and answer are included in the 4097 tokens.
   - It can't remember the previous asked question
 
 # credits
