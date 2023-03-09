@@ -43,7 +43,9 @@
   </style>
 </head>
 <body>
-<p>This model has a maximum context length of 4097 tokens. If you don't see any output, it means you have exceeded the limit. Both the question and answer are included in the 4097 tokens.</p>
+ <p>This model has a maximum context length of 4097 tokens.</p>
+ <p>If you see error inside the output form it means you have exceeded the limit.</p>
+ <p>Both the question and answer are included in the 4097 tokens.</p>
   <div>
     <label for="question">What is your question?</label>
     <textarea id="question" rows="4" cols="50"></textarea>
@@ -59,12 +61,14 @@
     <br>
     <textarea id="answer" rows="10" cols="50" readonly></textarea>
   </div>
+  </div>
+  <div id="error-message"></div>
   <script>
     $(document).ready(function() {
-
+    
       var chatgpt_api;
       var apiUrl = "https://api.openai.com/v1/completions";
-
+    
       function askApiKey() {
         chatgpt_api = prompt("Please enter your OpenAI API key:");
         if (!chatgpt_api) {
@@ -74,13 +78,13 @@
           document.cookie = "chatgpt_api=" + chatgpt_api + "; path=/";
         }
       }
-
+    
       if (document.cookie.indexOf("chatgpt_api") >= 0) {
         chatgpt_api = document.cookie.replace(/(?:(?:^|.*;\s*)chatgpt_api\s*\=\s*([^;]*).*$)|^.*$/, "$1");
       } else {
         askApiKey();
       }
-
+    
       $('#answer-btn').click(function() {
         var question = $('#question').val();
         var body = {
@@ -104,17 +108,26 @@
             $('#answer').val(answer);
           },
           error: function(jqXHR, textStatus, errorThrown) {
-            console.error("Error: " + textStatus, errorThrown);
+            var errorMsg = "Error: ";
+            if (jqXHR.status === 400) {
+              errorMsg += "You  have exceeded the limit of 4097 tokens.";
+            } else if (jqXHR.status === 401) {
+              errorMsg += "Unauthorized. Invalid API key.";
+            } else {
+              errorMsg += textStatus + " " + errorThrown;
+            }
+            console.error(errorMsg);
+            $('#answer').css('color', 'red').val(errorMsg);
           }
         });
       });
-
+    
       $('#clear-btn').click(function() {
         $('#question').val('');
         $('#answer').val('');
       });
-
+    
     });
-  </script>
+      </script>
 </body>
 </html>
