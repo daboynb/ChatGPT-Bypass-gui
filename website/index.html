@@ -107,20 +107,21 @@
             $('#answer').val(answer);
           },
           error: function(jqXHR, textStatus, errorThrown) {
-            var errorMsg = "Error: ";
-            if (jqXHR.status === 400) {
-              errorMsg += "You  have exceeded the limit of 4097 tokens.";
-            } else if (jqXHR.status === 401) {
-              errorMsg += "Unauthorized. Invalid API key.";
-            } else {
-              errorMsg += textStatus + " " + errorThrown;
-            }
-            console.error(errorMsg);
-            $('#answer').css('color', 'red').val(errorMsg);
+          var errorMsg = "Error: ";
+          if (jqXHR.status === 400) {
+            errorMsg += "You have exceeded the limit of 4097 tokens.";
+          } else if (jqXHR.status === 401) {
+            errorMsg += "Unauthorized. Invalid API key.";
+          } else if (jqXHR.status === 429) {
+            errorMsg += "You have hit your assigned rate limit for the API.";
+          } else {
+            errorMsg += textStatus + " " + errorThrown;
+          }
+          console.error(errorMsg);
+          $('#answer').css('color', 'red').val(errorMsg);
           }
         });
       });
-    
       $('#clear-btn').click(function() {
         $('#question').val('');
         $('#answer').val('');
